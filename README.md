@@ -60,21 +60,21 @@ Enter the following command to __enable Azure Dev Spaces__ support in your clust
 
 __Clone__ the repository with the __.NET Core__ sample application to __deploy__ to __Azure Dev Spaces__.
 
-This __repository__ is __forked__ from the __Azure Dev Space samples__ repository, it has been __restructured to ease the deployment__ process.
+This __repository__ is __forked__ from the __Azure Dev Space samples__ repository, and it has been __restructured to ease the deployment__ process.
 
 `git clone https://github.com/2morales/aks-workshop-isep.git`
 
 ### __Prepare the deployment__
 
-The next step is to containerize it by creating assets that define the app's container and Kubernetes deployment.
+The next step is to __containerize__ it by creating __assets__ that __define the app's container__ and __Kubernetes deployment__.
 
 1. Launch Visual Studio Code and open the project folder (ignore default prompts to add debug assets or restore the project dependencies).
 2. Open the Terminal (View > Integrated Terminal).
-3. Run the preparation command (be sure to change directory into the dotnetcore/webfrontend folder).
+3. Run the __preparation__ command (be sure to change directory into the __dotnetcore/webfrontend__ folder).
 
-..1 `cd dotnetcore/webfrontend`
+   * `cd dotnetcore/webfrontend`
 
-..2 `azds prep --public`
+   * `azds prep --public`
 
 The following files will be generated:
 
@@ -82,8 +82,25 @@ The following files will be generated:
 * A Helm chart under __./charts/webfrontend__ describing how to deploy the container to __Kubernetes__.
 * A file named __azds.yaml__, containing the configuration file for Azure Dev Spaces. It complements Kubernetes artifacts with additional configuration that enables an iterative development experience in __Azure__.
 
-It's worth pointing out, however, that the same Kubernetes and Docker configuration-as-code assets can be used from development through to production, thus providing better consistency across different environments.
+It's worth pointing out, however, that the same __Kubernetes and Docker configuration-as-code assets__ can be used from __development through to production__, thus __providing better consistency__ across __different environments__.
 
+Feel free to __explore the assets__ as you'll find __different options__ for configuration.
+
+### __Build and run code in Kubernetes__
+
+Run this command from the __root code folder__, dotnetcore/webfrontend:
+
+`azds up`
+
+Keep an eye on the command's output, as you'll notice several things:
+
+* Source code is __synced__ to the __dev space__ in Azure. 
+* A __container image__ is __built in Azure__, as __specified__ by the __Docker assets__ in your code folder.
+* __Kubernetes objects__ are created that utilize the __container image__ as __specified__ by the __Helm chart__.
+* Information about the __container's endpoint(s)__ is displayed.
+* Assuming the above stages complete successfully, you should begin to __see stdout (and stderr)__ output as the container starts up.
+
+These steps will __take longer the first time__ the up command is run, but subsequent runs should be quicker. 
 
 ---
 

@@ -70,8 +70,8 @@ The next step is to containerize it by creating assets that define the app's con
 1. Launch Visual Studio Code and open the project folder (ignore default prompts to add debug assets or restore the project dependencies).
 2. Open the Terminal (View > Integrated Terminal).
 3. Run the preparation command (be sure to change directory into the dotnetcore/webfrontend folder).
-
-`azds prep --public`
+..1 `cd dotnetcore/webfrontend`
+..2 `azds prep --public`
 
 The following files will be generated:
 

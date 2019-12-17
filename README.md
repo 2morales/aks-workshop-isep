@@ -1,28 +1,28 @@
-# Workshop Azure & Containers @ ISEP
+# __Workshop Azure & Containers @ ISEP__
 
 ![workshop-thumbnail](assets/workshop-thumbnail.png)
 
 --- 
 
-## Agenda (Azure Dev Spaces)
+## __Agenda (Azure Dev Spaces)__
 
-1. Create a Kubernetes-based environment in Azure that is optimized for development - a dev space.
+1. Create a __Kubernetes-based__ environment in Azure that is __optimized__ for development - a __dev space__.
     
-2. Iteratively develop code in containers using VS Code and the command line.
+2. __Iteratively__ develop code in containers using __VS Code__ and the __command line__.
     
-3. Productively develop and test your code in a team environment.
+3. __Productively__ develop and test __your code__ in a __team environment__.
 
-## The Illustrated Children's Guide to Kubernetes
+## __The Illustrated Children's Guide to Kubernetes__
 [![The Illustrated Children's Guide to Kubernetes](https://www.cncf.io/wp-content/uploads/2018/12/page1.png)](https://youtu.be/4ht22ReBjno)
 
 ---
 
-## Visual Studio Code and .NET Core with Azure Dev Spaces
+## __Visual Studio Code and .NET Core with Azure Dev Spaces__
 
-### Initial CLI Setup
+### __Initial CLI Setup__
 Start by [installing the Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) and verify installation.
 
-Login to your Azure account.
+__Login__ to your __Azure account__.
 
 `az login`
 
@@ -30,47 +30,50 @@ If you have more than one subscription in your account, you can list them with t
 
 `az account list --output table`
 
-If the subscription you desire has _False_ for _IsDefault_
+If the subscription you desire has **_False_** value for **_IsDefault_** key.
 
 `az account set --subscription <SUBSCRIPTION_ID>`
 
-### Create a Kubernetes cluster enabled for Azure Dev Spaces
+### __Create a Kubernetes cluster enabled for Azure Dev Spaces__
 
-Create a resource group for your cluster in a [supported region](https://docs.microsoft.com/en-us/azure/dev-spaces/about#supported-regions-and-configurations)
+Create a __resource group__ for your __Kubernetes cluster__ in a [supported region](https://docs.microsoft.com/en-us/azure/dev-spaces/about#supported-regions-and-configurations)
 
 `az group create --name "workshop-isep" --location "West Europe"`
 
-Create an Azure Kubernetes Service (AKS) 
+Create an __Azure Kubernetes Service (AKS)__ 
 
 `az aks create -g workshop-isep -n aks-workshop-isep --location "West Europe" --disable-rbac --generate-ssh-keys`
 
-### Configure your Cluster to use Azure Dev Spaces
+### __Configure your Kubernetes Cluster to use Azure Dev Spaces__
 
-Enter the following command to enable Azure Dev Spaces support in your cluster.
+Enter the following command to __enable Azure Dev Spaces__ support in your cluster.
 
 `az aks use-dev-spaces -g workshop-isep -n aks-workshop-isep`
 
-### Get Kubernetes Debugging for Visual Studio Code
+### __Get Kubernetes Debugging for Visual Studio Code__
 
 1. Install [Visual Studio Code](https://code.visualstudio.com/).
 
 2. Install [Azure Dev Spaces extension](https://marketplace.visualstudio.com/items?itemName=azuredevspaces.azds).
 
-### Clone the Sample App 
+### __Clone the Sample App__
 
-Clone the repository with the .NET Core sample application to deploy to Azure Dev Spaces.
-This repository is forked from the Azure Dev Space samples repository, it has been restructured to ease the deployment process.
+__Clone__ the repository with the __.NET Core__ sample application to __deploy__ to __Azure Dev Spaces__.
+
+This __repository__ is __forked__ from the __Azure Dev Space samples__ repository, it has been __restructured to ease the deployment__ process.
 
 `git clone https://github.com/2morales/aks-workshop-isep.git`
 
-### Prepare the deployment
+### __Prepare the deployment__
 
 The next step is to containerize it by creating assets that define the app's container and Kubernetes deployment.
 
 1. Launch Visual Studio Code and open the project folder (ignore default prompts to add debug assets or restore the project dependencies).
 2. Open the Terminal (View > Integrated Terminal).
 3. Run the preparation command (be sure to change directory into the dotnetcore/webfrontend folder).
+
 ..1 `cd dotnetcore/webfrontend`
+
 ..2 `azds prep --public`
 
 The following files will be generated:

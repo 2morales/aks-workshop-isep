@@ -17,7 +17,7 @@
 
 ---
 
-## __Visual Studio Code and .NET Core with Azure Dev Spaces__
+## [__Visual Studio Code and .NET Core with Azure Dev Spaces__](https://docs.microsoft.com/en-us/azure/dev-spaces/get-started-netcore)
 
 ### __Initial CLI Setup__
 Start by [installing the Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) and verify installation.
@@ -80,7 +80,7 @@ The following files will be generated:
 
 * A __Dockerfile__ describing the app's container image, how the source code is built and runs within the container.
 * A Helm chart under __./charts/webfrontend__ describing how to deploy the container to __Kubernetes__.
-* A file named __azds.yaml__, containing the configuration file for Azure Dev Spaces. It complements Kubernetes artifacts with additional configuration that enables an iterative development experience in __Azure__.
+* A file named __azds.yaml__, containing the configuration file for Azure Dev Spaces. It complements Kubernetes artifacts with additional configuration that enables an __iterative development__ experience in __Azure__.
 
 It's worth pointing out, however, that the same __Kubernetes and Docker configuration-as-code assets__ can be used from __development through to production__, thus __providing better consistency__ across __different environments__.
 
@@ -101,6 +101,56 @@ Keep an eye on the command's output, as you'll notice several things:
 * Assuming the above stages complete successfully, you should begin to __see stdout (and stderr)__ output as the container starts up.
 
 These steps will __take longer the first time__ the up command is run, but subsequent runs should be quicker. 
+
+### __Test the application__
+
+Scan the console output for the **_Application started_** message.
+
+```Python
+Service 'webfrontend' port 80 (TCP) is available at 'http://localhost:<port>'
+Service 'webfrontend' port 'http' is available at http://webfrontend.1234567890abcdef1234.euw.azds.io/
+Microsoft (R) Build Engine version 15.9.20+g88f5fadfbe for .NET Core
+Copyright (C) Microsoft Corporation. All rights reserved.
+webfrontend -> /src/bin/Debug/netcoreapp2.2/webfrontend.dll
+  webfrontend -> /src/bin/Debug/netcoreapp2.2/webfrontend.Views.dll
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+Time Elapsed 00:00:00.94
+[...]
+webfrontend-XXXXXXXXXX-ABCDE: Now listening on: http://[::]:80
+webfrontend-XXXXXXXXXX-ABCDE: Application started. Press Ctrl+C to shut down.
+```
+
+Follow the public URL for the service, and notice how ___stdout___ and ___stderr___ output is streamed to the __azds trace terminal__. Tracking information for HTTP requests is also streamed, making it easier for you to track complex calls during development.
+
+**Note** that the *http://localhost:\<port>* is actually running in AKS. Azure Dev Spaces uses **port-forward** functionality to map the **localhost port** to the **container running in AKS**.
+
+### **Update a content file**
+
+
+
+---
+
+## __Troubleshooting__
+
+### __Could not find Azure Dev Spaces controller__
+
+If Azure Dev Spaces CLI is not installed:
+
+`az aks use-dev-spaces -g <RESOUCE_GROUP_NAME> -n <AKS_CLUSTER_NAME>`
+
+List Dev Spaces controllers in your selected subscription:
+
+`azds controller list`
+
+Select an Azure Dev Spaces controller:
+
+`azds controller select <CONTROLLER_NAME>`
+
+If there controllers list is empty:
+
+`azds controller create --name <CONTROLLER_NAME> --target-name <AKS_CLUSTER_NAME> --resourge-group <RESOURCE_GROUP_NAME>`
 
 ---
 

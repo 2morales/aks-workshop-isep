@@ -107,27 +107,62 @@ These steps will __take longer the first time__ the up command is run, but subse
 Scan the console output for the **_Application started_** message.
 
 ```Python
-Service 'webfrontend' port 80 (TCP) is available at 'http://localhost:<port>'
-Service 'webfrontend' port 'http' is available at http://webfrontend.1234567890abcdef1234.euw.azds.io/
-Microsoft (R) Build Engine version 15.9.20+g88f5fadfbe for .NET Core
-Copyright (C) Microsoft Corporation. All rights reserved.
-webfrontend -> /src/bin/Debug/netcoreapp2.2/webfrontend.dll
-  webfrontend -> /src/bin/Debug/netcoreapp2.2/webfrontend.Views.dll
-Build succeeded.
-    0 Warning(s)
-    0 Error(s)
-Time Elapsed 00:00:00.94
-[...]
-webfrontend-XXXXXXXXXX-ABCDE: Now listening on: http://[::]:80
-webfrontend-XXXXXXXXXX-ABCDE: Application started. Press Ctrl+C to shut down.
+Using dev space 'default' with target 'aks-workshop-isep'
+Synchronizing files...2s
+Installing Helm chart...6s
+Waiting for container image build...4s
+Building container image...
+Step 1/13 : FROM mcr.microsoft.com/dotnet/core/sdk:2.2
+Step 2/13 : ARG BUILD_CONFIGURATION=Debug
+Step 3/13 : ENV ASPNETCORE_ENVIRONMENT=Development
+Step 4/13 : ENV ASPNETCORE_URLS=http://+:80
+Step 5/13 : ENV DOTNET_USE_POLLING_FILE_WATCHER=true
+Step 6/13 : EXPOSE 80
+Step 7/13 : WORKDIR /src
+Step 8/13 : COPY ["webfrontend.csproj", "./"]
+Step 9/13 : RUN dotnet restore "webfrontend.csproj"
+Step 10/13 : COPY . .
+Step 11/13 : RUN dotnet build --no-restore -c $BUILD_CONFIGURATION
+Step 12/13 : RUN echo "exec dotnet run --no-build --no-launch-profile -c $BUILD_CONFIGURATION -- \"\$@\"" > /entrypoint.sh
+Step 13/13 : ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
+Built container image in 1m 49s
+Waiting for container...28s
+Service 'webfrontend' port 'http' is available at http://default.webfrontend.glbwwbn5sp.weu.azds.io/
+Service 'webfrontend' port 80 (http) is available via port forwarding at http://localhost:50654
+press Ctrl+C to detach
+*
+*
+*
+webfrontend-8556456767-7gmwd: Hosting environment: Development
+webfrontend-8556456767-7gmwd: Content root path: /src
+webfrontend-8556456767-7gmwd: Now listening on: http://[::]:80
+webfrontend-8556456767-7gmwd: Application started. Press Ctrl+C to shut down.
 ```
 
 Follow the public URL for the service, and notice how ___stdout___ and ___stderr___ output is streamed to the __azds trace terminal__. Tracking information for HTTP requests is also streamed, making it easier for you to track complex calls during development.
 
-**Note** that the *http://localhost:PORT* is actually running in AKS. Azure Dev Spaces uses **port-forward** functionality to map the **localhost port** to the **container running in AKS**.
+**Note** that the *http://localhost:PORT* is actually running in AKS. **Azure Dev Spaces** uses **port-forward** functionality to map the **localhost port** to the **container running in AKS**.
 
 ### **Update a content file**
 
+**Azure Dev Spaces** isn't just about getting code running in Kubernetes - it's about **enabling you to quickly and iteratively see your code changes** take effect in a **Kubernetes environment in the cloud**.
+
+1. Locate the file **./Views/Home/Index.cshtml** and make an edit to the HTML. For example, change **line 73** that reads `<h2>Application uses</h2>` to something like: `<h2>Hello ISEP! Welcome to Azure Dev Spaces!!!</h2>`
+2. Save the file. Moments later, in the Terminal window you'll see a message saying a file in the **running container was updated**.
+3. Refresh the page, and notice how the HTML content was updated.
+   
+Edits to content files, like **HTML and CSS**, **don't require recompilation** in a **.NET Core web app**, so an active `azds up` command **automatically syncs** any modified content files into the **running container in Azure**, so you can **see your content edits right away.**
+
+### __Update a code file__
+
+Updating code files **requires a little more work**, because a **.NET Core app needs to rebuild** and produce updated application binaries.
+
+1. Stop `azds up` command.
+2. Open the file **Controllers/HomeController.cs**, and edit the massage that the **About page** wil display.
+3. Save the file.
+4. Run `azds up` again.
+
+This command **rebuilds the container image** and **redeploys the Helm chart**. To see your code changes take effect in the running application, go to the **About** menu in the web app.
 
 
 ---

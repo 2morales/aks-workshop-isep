@@ -73,6 +73,13 @@ The next step is to containerize it by creating assets that define the app's con
 
 `azds prep --public`
 
+The following files will be generated:
+
+* A __Dockerfile__ describing the app's container image, how the source code is built and runs within the container.
+* A Helm chart under __./charts/webfrontend__ describing how to deploy the container to __Kubernetes__.
+* A file named __azds.yaml__, containing the configuration file for Azure Dev Spaces. It complements Kubernetes artifacts with additional configuration that enables an iterative development experience in __Azure__.
+
+It's worth pointing out, however, that the same Kubernetes and Docker configuration-as-code assets can be used from development through to production, thus providing better consistency across different environments.
 
 
 ---

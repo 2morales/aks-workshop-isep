@@ -124,7 +124,7 @@ webfrontend-XXXXXXXXXX-ABCDE: Application started. Press Ctrl+C to shut down.
 
 Follow the public URL for the service, and notice how ___stdout___ and ___stderr___ output is streamed to the __azds trace terminal__. Tracking information for HTTP requests is also streamed, making it easier for you to track complex calls during development.
 
-**Note** that the *http://localhost:\<port>* is actually running in AKS. Azure Dev Spaces uses **port-forward** functionality to map the **localhost port** to the **container running in AKS**.
+**Note** that the *http://localhost:PORT* is actually running in AKS. Azure Dev Spaces uses **port-forward** functionality to map the **localhost port** to the **container running in AKS**.
 
 ### **Update a content file**
 

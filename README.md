@@ -164,6 +164,23 @@ Updating code files **requires a little more work**, because a **.NET Core app n
 
 This command **rebuilds the container image** and **redeploys the Helm chart**. To see your code changes take effect in the running application, go to the **About** menu in the web app.
 
+## __Debug a Container in Kubernetes__
+###
+
+<p align="center">
+  <img src="assets/edit-run-test.png">
+</p>
+
+### Initialize debug assets with the VS Code extension
+You first need to __configure your code__ project so VS Code will communicate with our __dev space in Azure__. The VS Code __extension__ for __Azure Dev Spaces__ provides a helper command to __set up debug configuration__.
+
+Open the __Command Palette__ (__using the View | Command Palette menu__), and use auto-complete to type and select this command: __Azure Dev Spaces: Prepare configuration files for Azure Dev Spaces__.
+
+This __adds debug configuration__ for __Azure Dev Spaces__ under the __.vscode__ folder. This command is not to be confused with the azds prep command, which configures the project for deployment.
+
+<p align="center"><img src="assets/prepare-debug.png"></p>
+
+
 
 ---
 

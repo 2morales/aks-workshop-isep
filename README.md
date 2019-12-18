@@ -178,41 +178,77 @@ Open the __Command Palette__ (__using the View | Command Palette menu__), and
 
 This __adds debug configuration__ for __Azure Dev Spaces__ under the __.vscode__ folder. This command is not to be confused with the azds prep command, which configures the project for deployment.
 
-<p align="center"><img src="assets/prepare-debug.png"></p>
+<p align="center"><img src="assets/prepare-debug-black.png"></p>
 
+Select the __Azure Dev Spaces Debug Configuration__.
 
+<p align="center"><img src="assets/azds-debug.png"></p>
+
+**Code** is then **synced to the dev space**, and a **container is built and deployed to Kubernetes**. This time, of course, the **debugger is attached** to the **remote container**.
+
+The **VS Code status bar** indicates that the **debugger is attached**. It will also display a **clickable URL**, which you can use to **open your site**.
+
+<p align="center"><img src="assets/debug-bar.png"></p>
+
+### __Edit code and refresh__
+
+With the **debugger active**, make a code edit. For example, **modify** the About page's message in `Controllers/HomeController.cs`
+
+```C#
+public IActionResult About()
+{
+  ViewData["Message"] = "Hello ISEP! We are Debugging";
+  
+  return View();
+}
+```
+
+Save the file, and in the **Debug actions pane**, click the **Refresh button**.
+
+<p align="center"><img src="assets/code-edit-refresh.png"></p>
+
+Instead of **rebuilding and redeploying** a new **container image each time code edits are made**, which will often **take considerable time**, **Azure Dev Spaces** will **incrementally recompile** code within the existing container to provide a **faster edit/debug loop**.
+
+Refresh the web app in the browser, and go to the About page. You should see your custom message appear in the UI.
+
+Now you have a method for **rapidly iterating** on code and **debugging directly in Kubernetes**! 
 
 ---
 
 ## __Troubleshooting__
 
+
+### __Update Azure CLI__
+
+`az aks use-dev-spaces -g <RESOURCE_GROUP_NAME> -n <AKS_CLUSTER_NAME> --update`
+
 ### __Could not find Azure Dev Spaces controller__
 
-If Azure Dev Spaces CLI is not installed:
+#### __If Azure Dev Spaces CLI is not installed:__
 
-`az aks use-dev-spaces -g <RESOUCE_GROUP_NAME> -n <AKS_CLUSTER_NAME>`
+`az aks use-dev-spaces -g <RESOURCE_GROUP_NAME> -n <AKS_CLUSTER_NAME>`
 
-List Dev Spaces controllers in your selected subscription:
+#### __List Dev Spaces controllers in your selected subscription:__
 
 `azds controller list`
 
-Select an Azure Dev Spaces controller:
+#### __Select an Azure Dev Spaces controller:__
 
 `azds controller select <CONTROLLER_NAME>`
 
-If there controllers list is empty:
+#### __If the controllers list is empty:__
 
 `azds controller create --name <CONTROLLER_NAME> --target-name <AKS_CLUSTER_NAME> --resourge-group <RESOURCE_GROUP_NAME>`
 
 ---
 
-## Azure Dev Spaces
+## __Azure Dev Spaces__
 AZDS is an Azure developer service that helps teams develop with speed on Kubernetes. [Click here for more information.](https://aka.ms/signup-azds)
 
-## Purpose of this repository
+## __Purpose of this repository__
 This source repository primarily hosts *AZDS code samples* to support product guides, as well as provide high-level insight into our product roadmap. Product documentation is hosted here: http://aka.ms/get-azds.
 
-## Contributing
+## __Contributing__
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
 the rights to use your contribution. For details, visit https://cla.microsoft.com.

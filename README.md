@@ -42,7 +42,7 @@ Create a __resource group__ for your __Kubernetes cluster__ in a [supported regi
 
 Create an __Azure Kubernetes Service (AKS)__ 
 
-`az aks create -g workshop-isep -n aks-workshop-isep --location "West Europe" --disable-rbac --generate-ssh-keys`
+`az aks create -g workshop-isep -n aks-workshop-isep --location "West Europe" --disable-rbac --generate-ssh-keys --node-count 1 --node-vm-size Standard_B2s`
 
 ### __Configure your Kubernetes Cluster to use Azure Dev Spaces__
 

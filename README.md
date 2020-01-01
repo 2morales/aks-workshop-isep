@@ -1,28 +1,30 @@
-# __Workshop Azure & Containers @ ISEP__
+# **Workshop Azure & Containers @ ISEP**
 
 ![workshop-thumbnail](assets/workshop-thumbnail.png)
 
---- 
+---
 
-## __Agenda (Azure Dev Spaces)__
+## **Agenda (Azure Dev Spaces)**
 
-1. Create a __Kubernetes-based__ environment in Azure that is __optimized__ for development - a __dev space__.
-    
-2. __Iteratively__ develop code in containers using __VS Code__ and the __command line__.
-    
-3. __Productively__ develop and test __your code__ in a __team environment__.
+1. Create a **Kubernetes-based** environment in Azure that is **optimized** for development - a **dev space**.
 
-## __The Illustrated Children's Guide to Kubernetes__
+2. **Iteratively** develop code in containers using **VS Code** and the **command line**.
+
+3. **Productively** develop and test **your code** in a **team environment**.
+
+## **The Illustrated Children's Guide to Kubernetes**
+
 [![The Illustrated Children's Guide to Kubernetes](https://www.cncf.io/wp-content/uploads/2018/12/page1.png)](https://youtu.be/4ht22ReBjno)
 
 ---
 
-## [__Visual Studio Code and .NET Core with Azure Dev Spaces__](https://docs.microsoft.com/en-us/azure/dev-spaces/get-started-netcore)
+## [**Visual Studio Code and .NET Core with Azure Dev Spaces**](https://docs.microsoft.com/en-us/azure/dev-spaces/get-started-netcore)
 
-### __Initial CLI Setup__
+### **Initial CLI Setup**
+
 Start by [installing the Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) and verify installation.
 
-__Login__ to your __Azure account__.
+**Login** to your **Azure account**.
 
 `az login`
 
@@ -34,75 +36,83 @@ If the subscription you desire has **_False_** value for **_IsDefault_** key.
 
 `az account set --subscription <SUBSCRIPTION_ID>`
 
-### __Create a Kubernetes cluster enabled for Azure Dev Spaces__
+### **Create a Kubernetes cluster enabled for Azure Dev Spaces**
 
-Create a __resource group__ for your __Kubernetes cluster__ in a [supported region](https://docs.microsoft.com/en-us/azure/dev-spaces/about#supported-regions-and-configurations)
+Create a **resource group** for your **Kubernetes cluster** in a [supported region](https://docs.microsoft.com/en-us/azure/dev-spaces/about#supported-regions-and-configurations)
 
 `az group create --name "workshop-isep" --location "West Europe"`
 
-Create an __Azure Kubernetes Service (AKS)__ 
+Create an **Azure Kubernetes Service (AKS)**
 
 `az aks create -g workshop-isep -n aks-workshop-isep --location "West Europe" --disable-rbac --generate-ssh-keys --node-count 1 --node-vm-size Standard_B2s`
 
-### __Configure your Kubernetes Cluster to use Azure Dev Spaces__
+### **Configure your Kubernetes Cluster to use Azure Dev Spaces**
 
-Enter the following command to __enable Azure Dev Spaces__ support in your cluster.
+Enter the following command to **enable Azure Dev Spaces** support in your cluster.
 
 `az aks use-dev-spaces -g workshop-isep -n aks-workshop-isep`
 
-### __Get Kubernetes Debugging for Visual Studio Code__
+### **Get Kubernetes Debugging for Visual Studio Code**
 
 1. Install [Visual Studio Code](https://code.visualstudio.com/).
 
 2. Install [Azure Dev Spaces extension](https://marketplace.visualstudio.com/items?itemName=azuredevspaces.azds).
 
-### __Clone the Sample App__
+### **Clone the Sample App**
 
-__Clone__ the repository with the __.NET Core__ sample application to __deploy__ to __Azure Dev Spaces__.
+**Clone** the repository with the **.NET Core** sample application to **deploy** to **Azure Dev Spaces**.
 
-This __repository__ is __forked__ from the __Azure Dev Space samples__ repository, and it has been __restructured to ease the deployment__ process.
+This **repository** is **forked** from the **Azure Dev Space samples** repository, and it has been **restructured to ease the deployment** process.
 
 `git clone https://github.com/2morales/aks-workshop-isep.git`
 
-### __Prepare the deployment__
+### **Prepare the deployment**
 
-The next step is to __containerize__ it by creating __assets__ that __define the app's container__ and __Kubernetes deployment__.
+The next step is to **containerize** it by creating **assets** that **define the app's container** and **Kubernetes deployment**.
 
-1. Launch Visual Studio Code and open the project folder (ignore default prompts to add debug assets or restore the project dependencies).
+1. Launch Visual Studio Code and open the **project folder**
+
+   - Note that you **must** open the **dotnetcore/webfrontend** folder.
+   - Ignore default prompts to add debug assets or restore the project dependencies.
+
 2. Open the Terminal (View > Integrated Terminal).
-3. Run the __preparation__ command (be sure to change directory into the __dotnetcore/webfrontend__ folder).
+3. Make sure you opened the __webfrontend__ folder.
 
-   * `cd dotnetcore/webfrontend`
+<p align="center">
+  <img src="assets/webfrontend_folder.png">
+</p>
 
-   * `azds prep --public`
+4. Run the **preparation** command (be sure to change directory into the **dotnetcore/webfrontend** folder).
+
+   - `azds prep --public`
 
 The following files will be generated:
 
-* A __Dockerfile__ describing the app's container image, how the source code is built and runs within the container.
-* A Helm chart under __./charts/webfrontend__ describing how to deploy the container to __Kubernetes__.
-* A file named __azds.yaml__, containing the configuration file for Azure Dev Spaces. It complements Kubernetes artifacts with additional configuration that enables an __iterative development__ experience in __Azure__.
+- A **Dockerfile** describing the app's container image, how the source code is built and runs within the container.
+- A Helm chart under **./charts/webfrontend** describing how to deploy the container to **Kubernetes**.
+- A file named **azds.yaml**, containing the configuration file for Azure Dev Spaces. It complements Kubernetes artifacts with additional configuration that enables an **iterative development** experience in **Azure**.
 
-It's worth pointing out, however, that the same __Kubernetes and Docker configuration-as-code assets__ can be used from __development through to production__, thus __providing better consistency__ across __different environments__.
+It's worth pointing out, however, that the same **Kubernetes and Docker configuration-as-code assets** can be used from **development through to production**, thus **providing better consistency** across **different environments**.
 
-Feel free to __explore the assets__ as you'll find __different options__ for configuration.
+Feel free to **explore the assets** as you'll find **different options** for configuration.
 
-### __Build and run code in Kubernetes__
+### **Build and run code in Kubernetes**
 
-Run this command from the __root code folder__, dotnetcore/webfrontend:
+Run this command from the **root code folder**, dotnetcore/webfrontend:
 
 `azds up`
 
 Keep an eye on the command's output, as you'll notice several things:
 
-* Source code is __synced__ to the __dev space__ in Azure. 
-* A __container image__ is __built in Azure__, as __specified__ by the __Docker assets__ in your code folder.
-* __Kubernetes objects__ are created that utilize the __container image__ as __specified__ by the __Helm chart__.
-* Information about the __container's endpoint(s)__ is displayed.
-* Assuming the above stages complete successfully, you should begin to __see stdout (and stderr)__ output as the container starts up.
+- Source code is **synced** to the **dev space** in Azure.
+- A **container image** is **built in Azure**, as **specified** by the **Docker assets** in your code folder.
+- **Kubernetes objects** are created that utilize the **container image** as **specified** by the **Helm chart**.
+- Information about the **container's endpoint(s)** is displayed.
+- Assuming the above stages complete successfully, you should begin to **see stdout (and stderr)** output as the container starts up.
 
-These steps will __take longer the first time__ the up command is run, but subsequent runs should be quicker. 
+These steps will **take longer the first time** the up command is run, but subsequent runs should be quicker.
 
-### __Test the application__
+### **Test the application**
 
 Scan the console output for the **_Application started_** message.
 
@@ -139,9 +149,9 @@ webfrontend-8556456767-7gmwd: Now listening on: http://[::]:80
 webfrontend-8556456767-7gmwd: Application started. Press Ctrl+C to shut down.
 ```
 
-Follow the public URL for the service, and notice how ___stdout___ and ___stderr___ output is streamed to the __azds trace terminal__. Tracking information for HTTP requests is also streamed, making it easier for you to track complex calls during development.
+Follow the public URL for the service, and notice how **_stdout_** and **_stderr_** output is streamed to the **azds trace terminal**. Tracking information for HTTP requests is also streamed, making it easier for you to track complex calls during development.
 
-**Note** that the *http://localhost:PORT* is actually running in AKS. **Azure Dev Spaces** uses **port-forward** functionality to map the **localhost port** to the **container running in AKS**.
+**Note** that the _http://localhost:PORT_ is actually running in AKS. **Azure Dev Spaces** uses **port-forward** functionality to map the **localhost port** to the **container running in AKS**.
 
 ### **Update a content file**
 
@@ -150,10 +160,10 @@ Follow the public URL for the service, and notice how ___stdout___ and ___stderr
 1. Locate the file **./Views/Home/Index.cshtml** and make an edit to the HTML. For example, change **line 73** that reads `<h2>Application uses</h2>` to something like: `<h2>Hello ISEP! Welcome to Azure Dev Spaces!!!</h2>`
 2. Save the file. Moments later, in the Terminal window you'll see a message saying a file in the **running container was updated**.
 3. Refresh the page, and notice how the HTML content was updated.
-   
+
 Edits to content files, like **HTML and CSS**, **don't require recompilation** in a **.NET Core web app**, so an active `azds up` command **automatically syncs** any modified content files into the **running container in Azure**, so you can **see your content edits right away.**
 
-### __Update a code file__
+### **Update a code file**
 
 Updating code files **requires a little more work**, because a **.NET Core app needs to rebuild** and produce updated application binaries.
 
@@ -164,7 +174,8 @@ Updating code files **requires a little more work**, because a **.NET Core app n
 
 This command **rebuilds the container image** and **redeploys the Helm chart**. To see your code changes take effect in the running application, go to the **About** menu in the web app.
 
-## __Debug a Container in Kubernetes__
+## **Debug a Container in Kubernetes**
+
 ###
 
 <p align="center">
@@ -172,15 +183,16 @@ This command **rebuilds the container image** and **redeploys the Helm chart**. 
 </p>
 
 ### Initialize debug assets with the VS Code extension
-You first need to __configure your code__ project so VS Code will communicate with our __dev space in Azure__. The VS Code __extension__ for __Azure Dev Spaces__ provides a helper command to __set up debug configuration__.
 
-Open the __Command Palette__ (__using the View | Command Palette menu__), and use auto-complete to type and select this command: __Azure Dev Spaces: Prepare configuration files for Azure Dev Spaces__.
+You first need to **configure your code** project so VS Code will communicate with our **dev space in Azure**. The VS Code **extension** for **Azure Dev Spaces** provides a helper command to **set up debug configuration**.
 
-This __adds debug configuration__ for __Azure Dev Spaces__ under the __.vscode__ folder. This command is not to be confused with the azds prep command, which configures the project for deployment.
+Open the **Command Palette** (**using the View | Command Palette menu**), and use auto-complete to type and select this command: **Azure Dev Spaces: Prepare configuration files for Azure Dev Spaces**.
+
+This **adds debug configuration** for **Azure Dev Spaces** under the **.vscode** folder. This command is not to be confused with the azds prep command, which configures the project for deployment.
 
 <p align="center"><img src="assets/prepare-debug-black.png"></p>
 
-Select the __Azure Dev Spaces Debug Configuration__.
+Select the **Azure Dev Spaces Debug Configuration**.
 
 <p align="center"><img src="assets/azds-debug.png"></p>
 
@@ -190,7 +202,7 @@ The **VS Code status bar** indicates that the **debugger is attached**. It will 
 
 <p align="center"><img src="assets/debug-bar.png"></p>
 
-### __Edit code and refresh__
+### **Edit code and refresh**
 
 With the **debugger active**, make a code edit. For example, **modify** the About page's message in `Controllers/HomeController.cs`
 
@@ -198,7 +210,7 @@ With the **debugger active**, make a code edit. For example, **modify** the Abou
 public IActionResult About()
 {
   ViewData["Message"] = "Hello ISEP! We are Debugging";
-  
+
   return View();
 }
 ```
@@ -211,45 +223,47 @@ Instead of **rebuilding and redeploying** a new **container image each time code
 
 Refresh the web app in the browser, and go to the About page. You should see your custom message appear in the UI.
 
-Now you have a method for **rapidly iterating** on code and **debugging directly in Kubernetes**! 
+Now you have a method for **rapidly iterating** on code and **debugging directly in Kubernetes**!
 
 ---
 
-## __Troubleshooting__
+## **Troubleshooting**
 
-
-### __Update Azure CLI__
+### **Update Azure CLI**
 
 `az aks use-dev-spaces -g <RESOURCE_GROUP_NAME> -n <AKS_CLUSTER_NAME> --update`
 
-### __Could not find Azure Dev Spaces controller__
+### **Could not find Azure Dev Spaces controller**
 
-#### __If Azure Dev Spaces CLI is not installed:__
+#### **If Azure Dev Spaces CLI is not installed:**
 
 `az aks use-dev-spaces -g <RESOURCE_GROUP_NAME> -n <AKS_CLUSTER_NAME>`
 
-#### __List Dev Spaces controllers in your selected subscription:__
+#### **List Dev Spaces controllers in your selected subscription:**
 
 `azds controller list`
 
-#### __Select an Azure Dev Spaces controller:__
+#### **Select an Azure Dev Spaces controller:**
 
 `azds controller select <CONTROLLER_NAME>`
 
-#### __If the controllers list is empty:__
+#### **If the controllers list is empty:**
 
 `azds controller create --name <CONTROLLER_NAME> --target-name <AKS_CLUSTER_NAME> --resourge-group <RESOURCE_GROUP_NAME>`
 
 ---
 
-## __Azure Dev Spaces__
+## **Azure Dev Spaces**
+
 AZDS is an Azure developer service that helps teams develop with speed on Kubernetes. [Click here for more information.](https://aka.ms/signup-azds)
 
-## __Purpose of this repository__
-This source repository primarily hosts *AZDS code samples* to support product guides, as well as provide high-level insight into our product roadmap. Product documentation is hosted here: http://aka.ms/get-azds.
+## **Purpose of this repository**
 
-## __Contributing__
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
+This source repository primarily hosts _AZDS code samples_ to support product guides, as well as provide high-level insight into our product roadmap. Product documentation is hosted here: http://aka.ms/get-azds.
+
+## **Contributing**
+
+This project welcomes contributions and suggestions. Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
 the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
